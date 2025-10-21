@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une mesure météo</title>
+    <link rel="stylesheet" href="{% static 'visualization/styles.css' %}">
+</head>
+<body>
+<header>
+    <h1>Ajouter une mesure météo</h1>
+</header>
+
+<main>
+    <form method="post" style="width: 400px; margin: 50px auto;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn-submit">Ajouter</button>
+    </form>
+</main>
+
+<style>
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6f8; }
+    header { text-align: center; padding: 2rem 0; background: #0284c7; color: white; }
+    .btn-submit { padding: 10px 20px; background: #0284c7; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    .btn-submit:hover { background: #0369a1; }
+</style>
+</body>
+</html>

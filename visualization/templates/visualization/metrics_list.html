@@ -1,0 +1,47 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block title %}Historique des Mesures{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin: 20px 0;">📊 Historique des Mesures Météo</h2>
+
+<div style="overflow-x:auto; width:95%; margin: auto;">
+    <table style="width:100%; border-collapse: collapse; font-family: 'Roboto', sans-serif;">
+        <thead>
+            <tr style="background:#0284c7; color:white;">
+                <th style="padding:10px;">Timestamp</th>
+                <th>Température (°C)</th>
+                <th>Humidité (%)</th>
+                <th>Pression (hPa)</th>
+                <th>Condition</th>
+                <th>Vent (m/s)</th>
+                <th>Dir Vent (°)</th>
+                <th>Pluie (mm)</th>
+                <th>UV</th>
+                <th>Visibilité (km)</th>
+                <th>Nuages (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for m in metrics %}
+            <tr style="text-align:center; border-bottom:1px solid #ddd;">
+                <td>{{ m.timestamp }}</td>
+                <td>{{ m.temperature }}</td>
+                <td>{{ m.humidity }}</td>
+                <td>{{ m.pressure }}</td>
+                <td>{{ m.condition }}</td>
+                <td>{{ m.wind_speed }}</td>
+                <td>{{ m.wind_direction }}</td>
+                <td>{{ m.rainfall }}</td>
+                <td>{{ m.uv_index }}</td>
+                <td>{{ m.visibility }}</td>
+                <td>{{ m.cloud_cover }}</td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="11" style="text-align:center;">Aucune donnée disponible.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

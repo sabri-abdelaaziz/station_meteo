@@ -1,0 +1,30 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block content %}
+<h2 style="text-align:center; margin:20px 0;">⚙️ Paramètres de la Station Météo</h2>
+
+<div style="width:50%; margin:auto; background:white; padding:20px; border-radius:15px; box-shadow:0 5px 15px rgba(0,0,0,0.1);">
+    <form method="POST">
+        {% csrf_token %}
+        <!-- Exemple de paramètre : fréquence de mise à jour -->
+        <div style="margin-bottom:15px;">
+            <label for="update_freq" style="font-weight:bold;">Fréquence de mise à jour (secondes)</label>
+            <input type="number" id="update_freq" name="update_freq" class="form-control" placeholder="Ex: 10" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;">
+        </div>
+
+        <!-- Ajouter d'autres paramètres ici -->
+        <div style="margin-bottom:15px;">
+            <label for="unit_temp" style="font-weight:bold;">Unités de Température</label>
+            <select id="unit_temp" name="unit_temp" class="form-control" style="width:100%; padding:10px; border-radius:8px; border:1px solid #ccc;">
+                <option value="C">°C</option>
+                <option value="F">°F</option>
+            </select>
+        </div>
+
+        <button type="submit" style="width:100%; padding:10px; background:#0284c7; color:white; border:none; border-radius:8px; font-weight:bold;">Sauvegarder</button>
+    </form>
+</div>
+{% endblock %}

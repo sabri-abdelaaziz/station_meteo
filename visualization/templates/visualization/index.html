@@ -1,0 +1,184 @@
+{% extends "../base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="text-center mb-4">
+    <p id="current-time" class="text-muted fs-6">Dernière mise à jour...</p>
+</div>
+
+<!-- Section des cartes météo -->
+<div class="row g-4 mb-4 text-center align-items-center justify-content-center">
+    <!-- Condition -->
+    <div class="col-12 ">
+        <div class="card shadow-sm text-center p-3 h-100 bg-light">
+            <div>
+ <img id="weather-icon" src="{% static 'visualization/images/sunny.png' %}" alt="Weather" width="60" class="mb-2">
+            <h5 class="card-title"><i class="fa-solid fa-cloud-sun"></i> Condition</h5>
+            <p class="card-text fs-5 fw-bold" id="condition-text">Ensoleillé</p>
+            </div>
+           
+        </div>
+    </div>
+    <!-- Température -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center p-3 h-100 bg-danger bg-opacity-10">
+            <h5 class="card-title"><i class="fa-solid fa-temperature-half"></i> Température</h5>
+            <p class="card-text fs-5 fw-bold" id="temp-value">{{ metrics.temperature|last }} °C</p>
+        </div>
+    </div>
+    <!-- Humidité -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center p-3 h-100 bg-primary bg-opacity-10">
+            <h5 class="card-title"><i class="fa-solid fa-droplet"></i> Humidité</h5>
+            <p class="card-text fs-5 fw-bold" id="hum-value">{{ metrics.humidity|last }} %</p>
+        </div>
+    </div>
+    <!-- Pression -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center p-3 h-100 bg-success bg-opacity-10">
+            <h5 class="card-title"><i class="fa-solid fa-gauge-high"></i> Pression</h5>
+            <p class="card-text fs-5 fw-bold" id="press-value">{{ metrics.pressure|last }} hPa</p>
+        </div>
+    </div>
+    <!-- Vent -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center p-3 h-100 bg-info bg-opacity-10">
+            <h5 class="card-title"><i class="fa-solid fa-wind"></i> Vent</h5>
+            <div class="d-flex align-items-center justify-content-center ">
+
+            <p class="card-text fs-6 ml-3" id="wind-value">{{ metrics.wind_speed|last }} m/s</p>
+            <p class="card-text fs-6" id="wind-dir-value">{{ metrics.wind_direction|last }}°</p>
+            </div>
+        </div>
+    </div>
+    <!-- Pluie -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center p-3 h-100 bg-primary bg-opacity-10">
+            <h5 class="card-title"><i class="fa-solid fa-cloud-showers-heavy"></i> Pluie</h5>
+            <p class="card-text fs-5 fw-bold" id="rain-value">{{ metrics.rainfall|last }} mm</p>
+        </div>
+    </div>
+    <!-- UV -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center p-3 h-100 bg-warning bg-opacity-10">
+            <h5 class="card-title"><i class="fa-solid fa-sun"></i> UV</h5>
+            <p class="card-text fs-5 fw-bold" id="uv-value">{{ metrics.uv_index|last }} Uv</p>
+        </div>
+    </div>
+    <!-- Visibilité -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center p-3 h-100 bg-secondary bg-opacity-10">
+            <h5 class="card-title"><i class="fa-solid fa-eye"></i> Visibilité</h5>
+            <p class="card-text fs-5 fw-bold" id="vis-value">{{ metrics.visibility|last }} km</p>
+        </div>
+    </div>
+    <!-- Nuages -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm text-center p-3 h-100 bg-light">
+            <h5 class="card-title"><i class="fa-solid fa-cloud"></i> Nuages</h5>
+            <p class="card-text fs-5 fw-bold" id="cloud-value">{{ metrics.cloud_cover|last }} %</p>
+        </div>
+    </div>
+</div>
+
+<!-- Graphiques pleine largeur -->
+<div class="row g-4">
+    <div class="col-12">
+        <div class="card shadow-sm p-3 mb-4">
+            <h5 class="mb-3"><i class="fa-solid fa-chart-line"></i> Température</h5>
+            <canvas id="tempChart" class="w-100"></canvas>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card shadow-sm p-3 mb-4">
+            <h5 class="mb-3"><i class="fa-solid fa-chart-line"></i> Humidité</h5>
+            <canvas id="humChart" class="w-100"></canvas>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card shadow-sm p-3 mb-4">
+            <h5 class="mb-3"><i class="fa-solid fa-chart-line"></i> Pression</h5>
+            <canvas id="pressChart" class="w-100"></canvas>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+function createChart(ctx, label, data, color) {
+    return new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ metrics.timestamps|safe }},
+            datasets: [{
+                label: label,
+                data: data,
+                borderColor: color,
+                backgroundColor: color.replace('1)', '0.2)'),
+                tension: 0.4,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { labels: { color: '#333', font: { size: 14 } } }
+            },
+            scales: {
+                x: { ticks: { color: '#555' } },
+                y: { ticks: { color: '#555' } }
+            }
+        }
+    });
+}
+
+// Graphiques
+const tempChart = createChart(document.getElementById('tempChart'), 'Température (°C)', {{ metrics.temperature|safe }}, 'rgba(239,68,68,1)');
+const humChart = createChart(document.getElementById('humChart'), 'Humidité (%)', {{ metrics.humidity|safe }}, 'rgba(59,130,246,1)');
+const pressChart = createChart(document.getElementById('pressChart'), 'Pression (hPa)', {{ metrics.pressure|safe }}, 'rgba(16,185,129,1)');
+
+function updateWeather() {
+    fetch('/api/metrics/latest/')
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById('temp-value').textContent = data.temperature + " °C";
+            document.getElementById('hum-value').textContent = data.humidity + " %";
+            document.getElementById('press-value').textContent = data.pressure + " hPa";
+            document.getElementById('wind-value').textContent = data.wind_speed + " m/s";
+            document.getElementById('wind-dir-value').textContent = data.wind_direction + "°";
+            document.getElementById('rain-value').textContent = data.rainfall + " mm";
+            document.getElementById('uv-value').textContent = data.uv_index;
+            document.getElementById('vis-value').textContent = data.visibility + " km";
+            document.getElementById('cloud-value').textContent = data.cloud_cover + " %";
+            document.getElementById('condition-text').textContent = data.condition;
+            document.getElementById('current-time').textContent = "Dernière mise à jour : " + data.timestamp;
+
+            const icon = document.getElementById('weather-icon');
+            const icons = {
+                sunny: "{% static 'visualization/images/sunny.png' %}",
+                rain: "{% static 'visualization/images/rain.png' %}",
+                cloudy: "{% static 'visualization/images/cloudy.png' %}",
+                storm: "{% static 'visualization/images/storm.png' %}",
+                unknown: "{% static 'visualization/images/unknown.png' %}"
+            };
+            icon.src = icons[data.condition] || icons['unknown'];
+
+            [tempChart, humChart, pressChart].forEach(chart => {
+                chart.data.labels.push(data.timestamp);
+                chart.data.datasets[0].data.push(data[chart.data.datasets[0].label.split(' ')[0].toLowerCase()]);
+                chart.data.labels = chart.data.labels.slice(-20);
+                chart.data.datasets[0].data = chart.data.datasets[0].data.slice(-20);
+                chart.update();
+            });
+        });
+}
+
+setInterval(updateWeather, 10000);
+</script>
+{% endblock %}
