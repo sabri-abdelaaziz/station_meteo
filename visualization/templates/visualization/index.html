@@ -3,113 +3,173 @@
 
 {% block content %}
 <div class="text-center mb-4">
+    <h2 class="fw-bold text-primary">🌤️ Station Météo IoT</h2>
     <p id="current-time" class="text-muted fs-6">Dernière mise à jour...</p>
 </div>
 
 <!-- Section des cartes météo -->
 <div class="row g-4 mb-4 text-center align-items-center justify-content-center">
+
     <!-- Condition -->
-    <div class="col-12 ">
-        <div class="card shadow-sm text-center p-3 h-100 bg-light">
-            <div>
- <img id="weather-icon" src="{% static 'visualization/images/sunny.png' %}" alt="Weather" width="60" class="mb-2">
-            <h5 class="card-title"><i class="fa-solid fa-cloud-sun"></i> Condition</h5>
-            <p class="card-text fs-5 fw-bold" id="condition-text">Ensoleillé</p>
+    <div class="col-12">
+        <div class="card shadow-lg border-0 rounded-4 bg-light p-4">
+            <div class="d-flex flex-column align-items-center">
+                <img id="weather-icon" src="{% static 'visualization/images/sunny.png' %}" alt="Weather" width="80" class="mb-3">
+                <h5 class="fw-semibold"><i class="fa-solid fa-cloud-sun"></i> Condition</h5>
+                <p class="fs-4 fw-bold text-dark mb-0" id="condition-text">Ensoleillé</p>
             </div>
-           
         </div>
     </div>
+
     <!-- Température -->
     <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100 bg-danger bg-opacity-10">
-            <h5 class="card-title"><i class="fa-solid fa-temperature-half"></i> Température</h5>
-            <p class="card-text fs-5 fw-bold" id="temp-value">{{ metrics.temperature|last }} °C</p>
+        <div class="card shadow-sm border-0 p-4 bg-danger bg-opacity-10 rounded-4 hover-shadow">
+            <h6 class="fw-semibold text-danger"><i class="fa-solid fa-temperature-half"></i> Température</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="temp-value">{{ metrics.temperature|last }} °C</p>
         </div>
     </div>
+
     <!-- Humidité -->
     <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100 bg-primary bg-opacity-10">
-            <h5 class="card-title"><i class="fa-solid fa-droplet"></i> Humidité</h5>
-            <p class="card-text fs-5 fw-bold" id="hum-value">{{ metrics.humidity|last }} %</p>
+        <div class="card shadow-sm border-0 p-4 bg-primary bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-primary"><i class="fa-solid fa-droplet"></i> Humidité</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="hum-value">{{ metrics.humidity|last }} %</p>
         </div>
     </div>
+
     <!-- Pression -->
     <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100 bg-success bg-opacity-10">
-            <h5 class="card-title"><i class="fa-solid fa-gauge-high"></i> Pression</h5>
-            <p class="card-text fs-5 fw-bold" id="press-value">{{ metrics.pressure|last }} hPa</p>
+        <div class="card shadow-sm border-0 p-4 bg-success bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-success"><i class="fa-solid fa-gauge-high"></i> Pression</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="press-value">{{ metrics.pressure|last }} hPa</p>
         </div>
     </div>
+
     <!-- Vent -->
     <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100 bg-info bg-opacity-10">
-            <h5 class="card-title"><i class="fa-solid fa-wind"></i> Vent</h5>
-            <div class="d-flex align-items-center justify-content-center ">
-
-            <p class="card-text fs-6 ml-3" id="wind-value">{{ metrics.wind_speed|last }} m/s</p>
-            <p class="card-text fs-6" id="wind-dir-value">{{ metrics.wind_direction|last }}°</p>
+        <div class="card shadow-sm border-0 p-4 bg-info bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-info"><i class="fa-solid fa-wind"></i> Vent</h6>
+            <div class="d-flex justify-content-center align-items-center gap-2">
+                <p class="fs-6 fw-bold mb-0 text-dark" id="wind-value">{{ metrics.wind_speed|last }} m/s</p>
+                <p class="fs-6 fw-bold mb-0 text-secondary" id="wind-dir-value">{{ metrics.wind_direction|last }}°</p>
             </div>
         </div>
     </div>
+
     <!-- Pluie -->
     <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100 bg-primary bg-opacity-10">
-            <h5 class="card-title"><i class="fa-solid fa-cloud-showers-heavy"></i> Pluie</h5>
-            <p class="card-text fs-5 fw-bold" id="rain-value">{{ metrics.rainfall|last }} mm</p>
+        <div class="card shadow-sm border-0 p-4 bg-secondary bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-secondary"><i class="fa-solid fa-cloud-showers-heavy"></i> Pluie</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="rain-value">{{ metrics.rainfall|last }} mm</p>
         </div>
     </div>
+
     <!-- UV -->
     <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100 bg-warning bg-opacity-10">
-            <h5 class="card-title"><i class="fa-solid fa-sun"></i> UV</h5>
-            <p class="card-text fs-5 fw-bold" id="uv-value">{{ metrics.uv_index|last }} Uv</p>
+        <div class="card shadow-sm border-0 p-4 bg-warning bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-warning"><i class="fa-solid fa-sun"></i> UV</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="uv-value">{{ metrics.uv_index|last }} UV</p>
         </div>
     </div>
+
     <!-- Visibilité -->
     <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100 bg-secondary bg-opacity-10">
-            <h5 class="card-title"><i class="fa-solid fa-eye"></i> Visibilité</h5>
-            <p class="card-text fs-5 fw-bold" id="vis-value">{{ metrics.visibility|last }} km</p>
+        <div class="card shadow-sm border-0 p-4 bg-dark bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-dark"><i class="fa-solid fa-eye"></i> Visibilité</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="vis-value">{{ metrics.visibility|last }} km</p>
         </div>
     </div>
+
     <!-- Nuages -->
     <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm text-center p-3 h-100 bg-light">
-            <h5 class="card-title"><i class="fa-solid fa-cloud"></i> Nuages</h5>
-            <p class="card-text fs-5 fw-bold" id="cloud-value">{{ metrics.cloud_cover|last }} %</p>
+        <div class="card shadow-sm border-0 p-4 bg-light rounded-4">
+            <h6 class="fw-semibold text-muted"><i class="fa-solid fa-cloud"></i> Nuages</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="cloud-value">{{ metrics.cloud_cover|last }} %</p>
         </div>
     </div>
 </div>
 
-<!-- Graphiques pleine largeur -->
+<!-- Graphiques -->
 <div class="row g-4">
     <div class="col-12">
-        <div class="card shadow-sm p-3 mb-4">
-            <h5 class="mb-3"><i class="fa-solid fa-chart-line"></i> Température</h5>
-            <canvas id="tempChart" class="w-100"></canvas>
+        <div class="card shadow-sm border-0 p-4 rounded-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Température</h5>
+            <canvas id="tempChart" class="w-100" height="100"></canvas>
         </div>
     </div>
     <div class="col-12">
-        <div class="card shadow-sm p-3 mb-4">
-            <h5 class="mb-3"><i class="fa-solid fa-chart-line"></i> Humidité</h5>
-            <canvas id="humChart" class="w-100"></canvas>
+        <div class="card shadow-sm border-0 p-4 rounded-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Humidité</h5>
+            <canvas id="humChart" class="w-100" height="100"></canvas>
         </div>
     </div>
     <div class="col-12">
-        <div class="card shadow-sm p-3 mb-4">
-            <h5 class="mb-3"><i class="fa-solid fa-chart-line"></i> Pression</h5>
-            <canvas id="pressChart" class="w-100"></canvas>
+        <div class="card shadow-sm border-0 p-4 rounded-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Pression</h5>
+            <canvas id="pressChart" class="w-100" height="100"></canvas>
         </div>
     </div>
 </div>
 
 
+<!-- 🔮 Prévisions pour les 5 prochains jours -->
+<section class="mt-5">
+    <h4 class="fw-bold mb-4 text-primary text-center">
+        <i class="fa-solid fa-calendar-days"></i> Prévisions pour les 5 prochains jours
+    </h4>
+    <div class="row justify-content-center g-4">
+        <!-- Jour 1 -->
+        <div class="col-6 col-md-2">
+            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
+                <h6 class="fw-semibold">Lundi</h6>
+                <img src="{% static 'visualization/images/sunny.png' %}" alt="Soleil" width="50" class="mx-auto my-2">
+                <p class="mb-1 text-muted">Soleil</p>
+                <p class="fw-bold text-danger mb-0">26°C</p>
+            </div>
+        </div>
+        <!-- Jour 2 -->
+        <div class="col-6 col-md-2">
+            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
+                <h6 class="fw-semibold">Mardi</h6>
+                <img src="{% static 'visualization/images/cloudy.png' %}" alt="Nuageux" width="50" class="mx-auto my-2">
+                <p class="mb-1 text-muted">Nuageux</p>
+                <p class="fw-bold text-warning mb-0">22°C</p>
+            </div>
+        </div>
+        <!-- Jour 3 -->
+        <div class="col-6 col-md-2">
+            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
+                <h6 class="fw-semibold">Mercredi</h6>
+                <img src="{% static 'visualization/images/rain.png' %}" alt="Pluie" width="50" class="mx-auto my-2">
+                <p class="mb-1 text-muted">Pluie</p>
+                <p class="fw-bold text-primary mb-0">19°C</p>
+            </div>
+        </div>
+        <!-- Jour 4 -->
+        <div class="col-6 col-md-2">
+            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
+                <h6 class="fw-semibold">Jeudi</h6>
+                <img src="{% static 'visualization/images/storm.png' %}" alt="Orage" width="50" class="mx-auto my-2">
+                <p class="mb-1 text-muted">Orage</p>
+                <p class="fw-bold text-secondary mb-0">17°C</p>
+            </div>
+        </div>
+        <!-- Jour 5 -->
+        <div class="col-6 col-md-2">
+            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
+                <h6 class="fw-semibold">Vendredi</h6>
+                <img src="{% static 'visualization/images/sunny.png' %}" alt="Soleil" width="50" class="mx-auto my-2">
+                <p class="mb-1 text-muted">Soleil</p>
+                <p class="fw-bold text-danger mb-0">25°C</p>
+            </div>
+        </div>
+    </div>
+</section>
 
 {% endblock %}
 
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
 function createChart(ctx, label, data, color) {
     return new Chart(ctx, {
@@ -120,25 +180,24 @@ function createChart(ctx, label, data, color) {
                 label: label,
                 data: data,
                 borderColor: color,
-                backgroundColor: color.replace('1)', '0.2)'),
+                backgroundColor: color.replace('1)', '0.1)'),
                 tension: 0.4,
-                fill: true
+                fill: true,
+                pointRadius: 3,
+                borderWidth: 2
             }]
         },
         options: {
             responsive: true,
-            plugins: {
-                legend: { labels: { color: '#333', font: { size: 14 } } }
-            },
+            plugins: { legend: { display: false } },
             scales: {
-                x: { ticks: { color: '#555' } },
-                y: { ticks: { color: '#555' } }
+                x: { ticks: { color: '#6b7280' }, grid: { display: false } },
+                y: { ticks: { color: '#6b7280' }, grid: { color: '#e5e7eb' } }
             }
         }
     });
 }
 
-// Graphiques
 const tempChart = createChart(document.getElementById('tempChart'), 'Température (°C)', {{ metrics.temperature|safe }}, 'rgba(239,68,68,1)');
 const humChart = createChart(document.getElementById('humChart'), 'Humidité (%)', {{ metrics.humidity|safe }}, 'rgba(59,130,246,1)');
 const pressChart = createChart(document.getElementById('pressChart'), 'Pression (hPa)', {{ metrics.pressure|safe }}, 'rgba(16,185,129,1)');
@@ -159,7 +218,6 @@ function updateWeather() {
             document.getElementById('condition-text').textContent = data.condition;
             document.getElementById('current-time').textContent = "Dernière mise à jour : " + data.timestamp;
 
-            const icon = document.getElementById('weather-icon');
             const icons = {
                 sunny: "{% static 'visualization/images/sunny.png' %}",
                 rain: "{% static 'visualization/images/rain.png' %}",
@@ -167,15 +225,7 @@ function updateWeather() {
                 storm: "{% static 'visualization/images/storm.png' %}",
                 unknown: "{% static 'visualization/images/unknown.png' %}"
             };
-            icon.src = icons[data.condition] || icons['unknown'];
-
-            [tempChart, humChart, pressChart].forEach(chart => {
-                chart.data.labels.push(data.timestamp);
-                chart.data.datasets[0].data.push(data[chart.data.datasets[0].label.split(' ')[0].toLowerCase()]);
-                chart.data.labels = chart.data.labels.slice(-20);
-                chart.data.datasets[0].data = chart.data.datasets[0].data.slice(-20);
-                chart.update();
-            });
+            document.getElementById('weather-icon').src = icons[data.condition] || icons['unknown'];
         });
 }
 
