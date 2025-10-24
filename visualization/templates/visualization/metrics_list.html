@@ -5,16 +5,34 @@
 
 {% block content %}
 <h2 class="text-center my-4 text-primary fw-bold">📊 Historique des Mesures Météo</h2>
-<!-- Optionnel : bouton pour exporter en CSV -->
+
+<!-- Latest Data Card (optional) -->
+{% if metrics.latest %}
+<div class="row justify-content-center mb-4">
+    <div class="col-md-4">
+        <div class="card shadow-sm p-3 text-center bg-light">
+            <h5 class="fw-bold"><i class="fa-solid fa-cloud-sun"></i> Dernière Mesure</h5>
+            <p>Température: {{ metrics.latest.temperature }} °C</p>
+            <p>Humidité: {{ metrics.latest.humidity }} %</p>
+            <p>Pression: {{ metrics.latest.pressure }} hPa</p>
+            <p>Condition: {{ metrics.latest.condition }}</p>
+            <p>Timestamp: {{ metrics.latest.timestamp }}</p>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Optional: Export buttons -->
 <div class="text-end mt-3 me-3">
     <a href="" class="btn btn-primary">
         <i class="fa-solid fa-file-csv"></i> Exporter CSV
     </a>
-      <a href="" class="btn btn-primary">
+    <a href="" class="btn btn-primary">
         <i class="fa-solid fa-file-pdf"></i> Exporter PDF
     </a>
-
 </div>
+
+<!-- Table -->
 <div class="table-responsive shadow-sm rounded-4 p-3" style="background: #f8fafc;">
     <table class="table table-striped table-hover align-middle">
         <thead class="table-primary text-center">
@@ -33,7 +51,7 @@
             </tr>
         </thead>
         <tbody class="text-center">
-            {% for m in metrics %}
+            {% for m in all_metrics %}
             <tr>
                 <td>{{ m.timestamp }}</td>
                 <td>{{ m.temperature }}</td>
@@ -55,6 +73,5 @@
         </tbody>
     </table>
 </div>
-
 
 {% endblock %}
