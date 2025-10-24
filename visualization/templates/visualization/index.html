@@ -2,44 +2,84 @@
 {% load static %}
 
 {% block content %}
-<div class="text-center mb-4">
-    <h2 class="fw-bold text-primary">🌤️ Station Météo Connecté</h2>
-    <p id="current-time" class="text-muted fs-6">Dernière mise à jour...</p>
-</div>
+
+
 
 
 <!-- Section des cartes météo -->
 <div class="row g-4 mb-4 text-center align-items-center justify-content-center">
 
-    <!-- Condition -->
-    <div class="col-12">
-        <div class="card shadow-lg d-flex border-0 rounded-4 bg-light p-4">
-            <div class="d-flex flex-column align-items-center">
-                <img id="weather-icon" src="{% static 'visualization/images/sunny.png' %}" alt="Weather" width="80" class="mb-3">
-                <h5 class="fw-semibold"><i class="fa-solid fa-cloud-sun"></i> Condition</h5>
+<!-- Condition & AI Recommendations -->
+<div class="col-12">
+    
+    <div class="card shadow-lg border-0 rounded-4 p-4 bg-gradient-light">
+        <!-- Last Update (Subtle) -->
+<p id="current-time" class="text-end text-muted small mb-2">
+    Dernière mise à jour: {{ latest.timestamp|date:"H:i d/m/Y" }}
+</p>
+        <div class="row align-items-center">
+            <!-- Weather Condition -->
+            <div class="col-md-4 d-flex flex-column align-items-center text-center mb-4 mb-md-0">
+                <div class="weather-icon-wrapper mb-3 p-3 rounded-circle bg-white shadow-sm">
+                    <img id="weather-icon" src="{% static 'visualization/images/sunny.png' %}" alt="Weather" width="80">
+                </div>
+                <h5 class="fw-semibold mb-1 text-primary"><i class="fa-solid fa-cloud-sun"></i> Condition</h5>
                 <p class="fs-4 fw-bold text-dark mb-0" id="condition-text">Ensoleillé</p>
             </div>
-            <div class="row g-4 mb-4 justify-content-center">
-    <div class="col-12 col-md-8">
-        <div class="card shadow-sm border-0 p-4 bg-light rounded-4">
-            <h5 class="fw-bold text-secondary mb-3">💡 Recommandations </h5>
-            {% if recommendations %}
-                <ul class="list-group list-group-flush">
-                    {% for rec in recommendations %}
-                        <li class="list-group-item border-0 p-2">
-                            <i class="fa-solid fa-robot text-primary me-2"></i> {{ rec }}
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="text-muted mb-0">Aucune recommandation pour le moment.</p>
-            {% endif %}
+
+            <!-- AI Recommendations -->
+            <div class="col-md-8">
+                <div class="card shadow-sm border-0 rounded-4 p-4 bg-white h-100">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="fa-solid fa-robot fa-2x text-primary me-3"></i>
+                        <h5 class="fw-bold text-secondary mb-0">💡 Recommandations </h5>
+                    </div>
+                    {% if recommendations %}
+                        <ul class="list-group list-group-flush">
+                            {% for rec in recommendations %}
+                                <li class="list-group-item border-0 p-2 d-flex align-items-center">
+                                    <i class="fa-solid fa-lightbulb text-warning me-3"></i> {{ rec }}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted mb-0">Aucune recommandation pour le moment.</p>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
 </div>
-        </div>
-        
-    </div>
+
+<style>
+    /* 🌤️ Subtle gradient background for the main card */
+  
+
+    /* Weather icon circular container */
+    .weather-icon-wrapper {
+        width: 120px;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    /* Hover effect for recommendations card */
+    .card.shadow-sm:hover {
+        transform: translateY(-3px);
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 767px) {
+        .weather-icon-wrapper {
+            width: 100px;
+            height: 100px;
+        }
+    }
+</style>
+
 
     <!-- Température -->
     <div class="col-12 col-md-4 col-lg-3">
