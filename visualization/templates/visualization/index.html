@@ -100,12 +100,12 @@
     <!-- Pression -->
     <div class="col-12 col-md-4 col-lg-3">
         <div class="card shadow-sm border-0 p-4 bg-success bg-opacity-10 rounded-4">
-            <h6 class="fw-semibold text-success"><i class="fa-solid fa-gauge-high"></i> Pression</h6>
+            <h6 class="fw-semibold text-success"><i class="fa-solid fa-gauge-high"></i> Pression Vapeur Eau</h6>
             <p class="fs-5 fw-bold mt-2 text-dark" id="press-value">{{ metrics.pressure|last }} hPa</p>
         </div>
     </div>
 
-    <!-- Vent -->
+    <!-- Vent
     <div class="col-12 col-md-4 col-lg-3">
         <div class="card shadow-sm border-0 p-4 bg-info bg-opacity-10 rounded-4">
             <h6 class="fw-semibold text-info"><i class="fa-solid fa-wind"></i> Vent</h6>
@@ -115,7 +115,15 @@
             </div>
         </div>
     </div>
+ -->
 
+  <!-- qualité de l'aire -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm border-0 p-4 bg-secondary bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-primary"><i class="fa-solid fa-cloud"></i> Qualité de l'aire</h6>
+            <p class="fs-5 fw-bold mt-2 text-success" id="rain-value">Bon</p>
+        </div>
+    </div>
     <!-- Pluie -->
     <div class="col-12 col-md-4 col-lg-3">
         <div class="card shadow-sm border-0 p-4 bg-secondary bg-opacity-10 rounded-4">
@@ -123,30 +131,32 @@
             <p class="fs-5 fw-bold mt-2 text-dark" id="rain-value">{{ metrics.rainfall|last }} mm</p>
         </div>
     </div>
+    
 
-    <!-- UV -->
+    <!-- UV 
     <div class="col-12 col-md-4 col-lg-3">
         <div class="card shadow-sm border-0 p-4 bg-warning bg-opacity-10 rounded-4">
             <h6 class="fw-semibold text-warning"><i class="fa-solid fa-sun"></i> UV</h6>
             <p class="fs-5 fw-bold mt-2 text-dark" id="uv-value">{{ metrics.uv_index|last }} UV</p>
         </div>
     </div>
-
-    <!-- Visibilité -->
+-->
+    <!-- Visibilité 
     <div class="col-12 col-md-4 col-lg-3">
         <div class="card shadow-sm border-0 p-4 bg-dark bg-opacity-10 rounded-4">
             <h6 class="fw-semibold text-dark"><i class="fa-solid fa-eye"></i> Visibilité</h6>
             <p class="fs-5 fw-bold mt-2 text-dark" id="vis-value">{{ metrics.visibility|last }} km</p>
         </div>
     </div>
-
-    <!-- Nuages -->
+-->
+    <!-- Nuages
     <div class="col-12 col-md-4 col-lg-3">
         <div class="card shadow-sm border-0 p-4 bg-light rounded-4">
             <h6 class="fw-semibold text-muted"><i class="fa-solid fa-cloud"></i> Nuages</h6>
             <p class="fs-5 fw-bold mt-2 text-dark" id="cloud-value">{{ metrics.cloud_cover|last }} %</p>
         </div>
     </div>
+     -->
 </div>
 
 
@@ -167,7 +177,7 @@
     </div>
     <div class="col-12">
         <div class="card shadow-sm border-0 p-4 rounded-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Pression</h5>
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Pression Vapeur Eau</h5>
             <canvas id="pressChart" class="w-100" height="100"></canvas>
         </div>
     </div>
@@ -221,9 +231,9 @@
         <div class="col-12 col-md-4 col-lg-3">
             <div class="card shadow-lg border-0 rounded-4 p-4 hover-scale bg-gradient-to-br from-yellow-100 to-yellow-50">
                 <div class="d-flex flex-column align-items-center">
-                    <div class="badge rounded-pill bg-warning mb-3 px-3 py-2 fw-semibold">☀️ UV Index</div>
+                    <div class="badge rounded-pill bg-warning mb-3 px-3 py-2 fw-semibold">Qualité de l'air</div>
                     <p class="fs-3 fw-bold text-dark mb-1" id="uv-forecast-value">
-                        {{ forecast.uv_index.0|floatformat:1 }} UV
+                        Moyenne
                     </p>
                     <small class="text-muted">Prochaine heure</small>
                     <div class="w-100 mt-3">

@@ -109,14 +109,14 @@
     <!-- UV Index Forecast -->
     <div class="col-12 col-md-4 col-lg-3">
         <div class="forecast-card">
-            <div class="forecast-title text-warning">☀️ UV Index</div>
+            <div class="forecast-title text-warning">Qualité de l'aire</div>
             <span class="badge-alert badge-danger">
                 {{ forecast.uv_alert|default:"⚠️" }}
             </span>
-            <div class="forecast-value">{{ forecast.uv_index.0|floatformat:1 }} UV</div>
+            <div class="forecast-value">Mouvaise</div>
             <canvas id="uvForecastChart" height="60"></canvas>
             <div class="forecast-trend">
-                {{ forecast.uv_index|first }} → {{ forecast.uv_index|last }} UV
+                {{ forecast.uv_index|first }} → {{ forecast.uv_index|last }} 
                 {% if forecast.uv_index.0 < forecast.uv_index.1 %}
                     <i class="fa-solid fa-arrow-up text-danger"></i>
                 {% else %}

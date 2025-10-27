@@ -40,14 +40,10 @@
                 <th>Timestamp</th>
                 <th>Température (°C)</th>
                 <th>Humidité (%)</th>
-                <th>Pression (hPa)</th>
-                <th>Condition</th>
-                <th>Vent (m/s)</th>
-                <th>Dir Vent (°)</th>
+                <th>Pression Vapeur de l'eau</th>
+                
                 <th>Pluie (mm)</th>
-                <th>UV</th>
-                <th>Visibilité (km)</th>
-                <th>Nuages (%)</th>
+                <th>Condition</th>
             </tr>
         </thead>
         <tbody class="text-center">
@@ -57,13 +53,8 @@
                 <td>{{ m.temperature }}</td>
                 <td>{{ m.humidity }}</td>
                 <td>{{ m.pressure }}</td>
-                <td>{{ m.condition }}</td>
-                <td>{{ m.wind_speed }}</td>
-                <td>{{ m.wind_direction }}</td>
                 <td>{{ m.rainfall }}</td>
-                <td>{{ m.uv_index }}</td>
-                <td>{{ m.visibility }}</td>
-                <td>{{ m.cloud_cover }}</td>
+                 <td>{{ m.condition }}</td>
             </tr>
             {% empty %}
             <tr>
