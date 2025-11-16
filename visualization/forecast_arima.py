@@ -120,12 +120,11 @@ def generate_forecast():
         print(f"DEBUG ERROR: {error_msg}")
         return {"error": error_msg}
 
-    # Récupérer les 10 dernières températures depuis MySQL, table temperature_horaire
+    # Récupérer les 10 dernières températures depuis PostgreSQL, table meteo
     try:
         with connection.cursor() as cursor:
             # Requête SQL pour récupérer les 10 dernières températures
-            # On suppose que la table a une colonne 'temperature' et une colonne de timestamp
-            # Ajustez le nom de la colonne de timestamp selon votre schéma (peut être 'timestamp', 'date', 'heure', etc.)
+            # Compatible PostgreSQL
             query = """
                 SELECT temperature 
                 FROM meteo 
@@ -147,14 +146,14 @@ def generate_forecast():
                 else:
                     # Si aucune donnée, utiliser des valeurs par défaut
                     temperature_list = [20.0] * 10
-                    print("DEBUG: Aucune donnée dans temperature_horaire, utilisation de valeurs par défaut")
+                    print("DEBUG: Aucune donnée dans la table meteo, utilisation de valeurs par défaut")
             
-            print(f"DEBUG: Températures récupérées depuis MySQL: {temperature_list}")
+            print(f"DEBUG: Températures récupérées depuis PostgreSQL: {temperature_list}")
             print(f"DEBUG: Nombre de valeurs: {len(temperature_list)}")
             print(f"DEBUG: Lag_1 (plus récent) = {temperature_list[-1]}, Lag_10 (plus ancien) = {temperature_list[0]}")
             
     except Exception as e:
-        print(f"DEBUG ERROR: Erreur lors de la récupération depuis MySQL: {e}")
+        print(f"DEBUG ERROR: Erreur lors de la récupération depuis PostgreSQL: {e}")
         # En cas d'erreur, utiliser des valeurs par défaut
         temperature_list = [20.0] * 10
         print(f"DEBUG: Utilisation de valeurs par défaut: {temperature_list}")
