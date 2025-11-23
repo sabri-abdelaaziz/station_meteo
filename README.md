@@ -1,4 +1,4 @@
-# IoT Web Dashboard – Django + AWS + AI
+# IoT Sensors +  Web – Django + AWS + AI
 
 ## Project Overview
 This project is a **web dashboard for visualizing IoT sensor data** (temperature, humidity, air quality, luminosity, etc.) and **displaying AI predictions**.  
@@ -41,31 +41,37 @@ AI models provide predictions and alerts to help users make data-driven decision
 ---
 
 ## Installation
-1. Clone the repository:  
-```bash
-git clone https://github.com/yourusername/iot-dashboard.git
-cd iot-dashboard
 
-
-## Installation
 1. Clone the repo:  
 ```bash
 git clone https://github.com/sabri-abdelaaziz/station_meteo.git
 cd station_meteo
-
+2. Create the environement: 
 python -m venv venv
 source venv/bin/activate   # Linux/Mac
 venv\Scripts\activate      # Windows
-
+3. Install requirements from the file provided: 
 pip install -r requirements.txt
 
-
+4. Optional to migrate DB: 
 python manage.py migrate
 
-TO RUN THE APP :
+5. TO RUN THE APP :
 
 python manage.py runserver
 
 then Navigate to http://localhost:8000 to access the dashboard.
+
+
+# -------------------------------
+# Collaborators
+# -------------------------------
+# Abdelaaziz Sabri        - Web App / Django             - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/sabri-abdelaaziz)
+# Mohamed BAIHICH         - Sensors / connectivity       - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/medbaihich)
+# Akram RYAD              - Sensors / connectivity       - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/akmanime)
+# Brahim OUBALAOUT        - Sensors / connectivity       - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/brahimoubalaout)
+# Mohamed amine zinabi    - AI Model Integration         - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/MohamedAmineZinabi)
+# Youssef Bouaabane       - Deployment / AWS             - [https://github.com/AliceMartin](https://github.com/youssefhk-sw)
+
 
 
