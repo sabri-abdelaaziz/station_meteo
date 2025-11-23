@@ -28,25 +28,26 @@
             </div>
 
             <!-- AI Recommendations -->
-            <div class="col-md-8">
-                <div class="card shadow-sm border-0 rounded-4 p-4 bg-white h-100">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fa-solid fa-robot fa-2x text-primary me-3"></i>
-                        <h5 class="fw-bold text-secondary mb-0">💡 Recommandations </h5>
-                    </div>
-                    {% if recommendations %}
-                        <ul class="list-group list-group-flush">
-                            {% for rec in recommendations %}
-                                <li class="list-group-item border-0 p-2 d-flex align-items-center">
-                                    <i class="fa-solid fa-lightbulb text-warning me-3"></i> {{ rec }}
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        <p class="text-muted mb-0">Aucune recommandation pour le moment.</p>
-                    {% endif %}
-                </div>
-            </div>
+          <div class="col-md-8">
+    <div class="card shadow-sm border-0 rounded-4 p-4 bg-white h-100">
+        <div class="d-flex align-items-center mb-3">
+            <i class="fa-solid fa-robot fa-2x text-primary me-3"></i>
+            <h5 class="fw-bold text-secondary mb-0">💡 Recommandations</h5>
+        </div>
+        {% if recommendations %}
+            <ul class="list-group list-group-flush">
+                {% for rec in recommendations %}
+                    <li class="list-group-item border-0 p-2 d-flex align-items-center">
+                        <i class="fa-solid fa-lightbulb text-warning me-3"></i> {{ rec }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="text-muted mb-0">Aucune recommandation disponible pour le moment.</p>
+        {% endif %}
+    </div>
+</div>
+
         </div>
     </div>
 </div>

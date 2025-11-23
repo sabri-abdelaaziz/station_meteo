@@ -135,25 +135,24 @@ def generate_recommendations(forecast):
     recommendations = []
 
     # Temperature-based recommendation
-    temp = forecast['temperature'][0]  # next hour temp
+    temp = forecast['temperature'][0]  # température pour l'heure suivante
     if temp < 10:
-        recommendations.append("It's quite cold 🌬️ – wear a warm jacket if going outside.")
+        recommendations.append("Il fait assez froid 🌬️ – pense à mettre une veste chaude si tu sors.")
     elif 10 <= temp <= 25:
-        recommendations.append("Temperature is nice 🌤️ – perfect for outdoor activities!")
+        recommendations.append("La température est agréable 🌤️ – parfaite pour des activités en plein air !")
     else:
-        recommendations.append("It's hot 🥵 – stay hydrated if you go out.")
+        recommendations.append("Il fait chaud 🥵 – n'oublie pas de bien t'hydrater si tu sors.")
 
-    # Rain-based recommendation
-    rain_prob = forecast['rainfall'][0]  # % chance of rain
+# Recommandation selon la pluie
+    rain_prob = forecast['rainfall'][0]  # % de probabilité de pluie
     if rain_prob > 60:
-        recommendations.append(f"Carry an umbrella today – {rain_prob}% chance of rain ☔")
+        recommendations.append(f"Pense à prendre un parapluie aujourd’hui ☔ – {rain_prob}% de risque de pluie.")
 
-    # UV-based recommendation
+    # Recommandation selon l’indice UV
     uv_index = forecast['uv_index'][0]
     if uv_index >= 6:
-        recommendations.append("UV index is high ☀️ – wear sunscreen or a hat!")
+        recommendations.append("L’indice UV est élevé ☀️ – mets de la crème solaire ou porte un chapeau !")
 
-   
     return recommendations
 
 
