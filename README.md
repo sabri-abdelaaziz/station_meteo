@@ -38,6 +38,19 @@ AI models provide predictions and alerts to help users make data-driven decision
 - Predictions are displayed in the dashboard with alerts  
 - Helps users anticipate issues before thresholds are reached  
 
+# -------------------------------
+# Collaborators
+# -------------------------------
+# Abdelaaziz Sabri        - Web App / Django             - https://github.com/sabri-abdelaaziz
+# Mohamed BAIHICH         - Sensors / connectivity       - https://github.com/medbaihich
+# Akram RYAD              - Sensors / connectivity       - https://github.com/akmanime
+# Brahim OUBALAOUT        - Sensors / connectivity       - https://github.com/brahimoubalaout
+# Mohamed amine zinabi    - AI Model Integration         - https://github.com/MohamedAmineZinabi
+# Youssef Bouaabane       - Deployment / AWS             - https://github.com/youssefhk-sw
+
+
+
+
 ---
 
 ## Installation
@@ -61,17 +74,6 @@ python manage.py migrate
 python manage.py runserver
 
 then Navigate to http://localhost:8000 to access the dashboard.
-
-
-# -------------------------------
-# Collaborators
-# -------------------------------
-# Abdelaaziz Sabri        - Web App / Django             - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/sabri-abdelaaziz)
-# Mohamed BAIHICH         - Sensors / connectivity       - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/medbaihich)
-# Akram RYAD              - Sensors / connectivity       - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/akmanime)
-# Brahim OUBALAOUT        - Sensors / connectivity       - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/brahimoubalaout)
-# Mohamed amine zinabi    - AI Model Integration         - [https://github.com/AbdeIdsd](https://github.com/sabri-abdelaaziz/](https://github.com/MohamedAmineZinabi)
-# Youssef Bouaabane       - Deployment / AWS             - [https://github.com/AliceMartin](https://github.com/youssefhk-sw)
 
 
 
