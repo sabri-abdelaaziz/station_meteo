@@ -1,0 +1,3 @@
+[wokwi]
+board = "esp32"
+firmware = ".arduino-build/sketch.ino.bin"

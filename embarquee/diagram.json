@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "author": "Mehmet Duran",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": -57.3, "left": -130.2, "attrs": {} },
+    { "type": "wokwi-gas-sensor", "id": "gas1", "top": 127.5, "left": -175.4, "attrs": {} }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "esp:5V", "gas1:VCC", "red", [ "h-23.81", "v-28.8" ] ],
+    [ "dht1:VCC", "esp:5V", "red", [ "v48", "h96", "v96" ] ],
+    [ "esp:GND.1", "gas1:GND", "black", [ "h-14.21", "v9.6" ] ],
+    [ "dht1:GND", "esp:GND.1", "black", [ "v38.4", "h76.8", "v57.6" ] ],
+    [ "gas1:AOUT", "esp:34", "green", [ "h9.6", "v-76.8" ] ],
+    [ "dht1:SDA", "esp:5", "green", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}
