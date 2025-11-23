@@ -8,7 +8,7 @@
 // ----------------------------------------
 // WIFI + MQTT TLS CONFIG
 // ----------------------------------------
-const char* ssid = "ORANGE-DIGITAL-CENTER";
+const char* ssid = "ORANGE-DIGITAL-CENTER";//configurer  SSID
 const char* password = "Welcome@2023";
 const char* mqtt_server = "108.129.254.33";
 const uint16_t mqtt_port = 8883;
