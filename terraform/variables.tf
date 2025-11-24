@@ -1,0 +1,10 @@
+variable "aws_region" { default = "eu-west-1" }
+variable "user" {default = "terraform-admin"}
+variable "project" { default = "weather-station" }
+variable "vpc_cidr" { default = "10.0.0.0/16" }
+#variable "mqtt_broker_host" {default = "http://ec2-3-73-125-2.eu-central-1.compute.amazonaws.com"}
+variable "mqtt_port" { default = 8883 }
+variable "mqtt_topic" { default = "esp8266/captures/data/#" }
+variable "db_name" { default = "weather" }
+variable "db_user" { default = "weather_user" }
+variable "db_port" { default = 5432 }
