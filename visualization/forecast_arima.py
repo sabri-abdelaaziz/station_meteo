@@ -56,7 +56,7 @@ def generate_forecast():
     metrics = WeatherMetric.objects.order_by('-timestamp')[:100]  # last 100 records
     df = pd.DataFrame(list(metrics.values('timestamp', 'temperature', 'rainfall', 'uv_index')))
     df.set_index('timestamp', inplace=True)
-
+    df.round(2)
     forecast = {}
 
     # Forecast function for each metric
@@ -69,7 +69,7 @@ def generate_forecast():
         pred = model_fit.forecast(steps=steps)
         return pred.tolist()
 
-    forecast['temperature'] = forecast_arima(df['temperature'], steps=5)
+    forecast['temperature'] = forecast_arima(round(df['temperature'],2), steps=5)
     forecast['rainfall'] = forecast_arima(df['rainfall'], steps=5)
     forecast['uv_index'] = forecast_arima(df['uv_index'], steps=5)
 
