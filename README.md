@@ -20,7 +20,11 @@ AI models provide predictions and alerts to help users make data-driven decision
 
 ### Sensors
 - IoT sensors measure environmental data (temperature, humidity, air quality, luminosity)  
-- Data is sent periodically to the backend or directly to AWS services  
+- Data is sent periodically to the backend or directly to AWS services
+
+### Connectivity and Security
+- MQTT Broker (Mosquitto) hosted on EC2 to enable communication between the embedded system and the cloud.
+- mTLS security implemented using the mutual TLS handshake mechanism to ensure encrypted and authenticated communication.
 
 ### AWS Cloud
 - **S3:** Stores backups and static files  
@@ -42,9 +46,9 @@ AI models provide predictions and alerts to help users make data-driven decision
 # Collaborators
 # -------------------------------
 # Abdelaaziz Sabri        - Web App / Django             - https://github.com/sabri-abdelaaziz
-# Mohamed BAIHICH         - Sensors / connectivity       - https://github.com/medbaihich
-# Akram RYAD              - Sensors / connectivity       - https://github.com/akmanime
-# Brahim OUBALAOUT        - Sensors / connectivity       - https://github.com/brahimoubalaout
+# Mohamed BAIHICH         - Connectivity / Security      - https://github.com/medbaihich
+# Akram RYAD              - Embedded part / Sensors      - https://github.com/akmanime
+# Brahim OUBALAOUT        - Embedded part / Sensors      - https://github.com/brahimoubalaout
 # Mohamed amine zinabi    - AI Model Integration         - https://github.com/MohamedAmineZinabi
 # Youssef Bouaabane       - Deployment / AWS             - https://github.com/youssefhk-sw
 
