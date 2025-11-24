@@ -97,11 +97,35 @@
         </div>
     </div>
 
-    <!-- Pression -->
+    <!-- Pluie -->
     <div class="col-12 col-md-4 col-lg-3">
         <div class="card shadow-sm border-0 p-4 bg-success bg-opacity-10 rounded-4">
-            <h6 class="fw-semibold text-success"><i class="fa-solid fa-gauge-high"></i> Pression Vapeur Eau</h6>
-            <p class="fs-5 fw-bold mt-2 text-dark" id="press-value">{{ metrics.pressure|last }} hPa</p>
+            <h6 class="fw-semibold text-success"><i class="fa-solid fa-cloud-showers-heavy"></i> Pluie</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="rain-value">{{ metrics.rain|last }} mm</p>
+        </div>
+    </div>
+
+    <!-- Humidité du Sol -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm border-0 p-4 bg-warning bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-warning"><i class="fa-solid fa-leaf"></i> Humidité Sol</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="soil-value">{{ metrics.soil_moisture|last }} %</p>
+        </div>
+    </div>
+
+    <!-- Niveau de Lumière -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm border-0 p-4 bg-info bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-info"><i class="fa-solid fa-sun"></i> Lumière</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="light-value">{{ metrics.light_level|last }} lux</p>
+        </div>
+    </div>
+
+    <!-- Qualité de l'Air -->
+    <div class="col-12 col-md-4 col-lg-3">
+        <div class="card shadow-sm border-0 p-4 bg-secondary bg-opacity-10 rounded-4">
+            <h6 class="fw-semibold text-secondary"><i class="fa-solid fa-wind"></i> Qualité Air</h6>
+            <p class="fs-5 fw-bold mt-2 text-dark" id="air-value">{{ metrics.air_quality|last }} ppm</p>
         </div>
     </div>
 
@@ -117,20 +141,7 @@
     </div>
  -->
 
-  <!-- qualité de l'aire -->
-    <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm border-0 p-4 bg-secondary bg-opacity-10 rounded-4">
-            <h6 class="fw-semibold text-primary"><i class="fa-solid fa-cloud"></i> Qualité de l'aire</h6>
-            <p class="fs-5 fw-bold mt-2 text-success" id="rain-value">Bon</p>
-        </div>
-    </div>
-    <!-- Pluie -->
-    <div class="col-12 col-md-4 col-lg-3">
-        <div class="card shadow-sm border-0 p-4 bg-secondary bg-opacity-10 rounded-4">
-            <h6 class="fw-semibold text-secondary"><i class="fa-solid fa-cloud-showers-heavy"></i> Pluie</h6>
-            <p class="fs-5 fw-bold mt-2 text-dark" id="rain-value">{{ metrics.rainfall|last }} mm</p>
-        </div>
-    </div>
+    {# Qualité de l'air et Pluie retirés — affichage simplifié demandé #}
     
 
     <!-- UV 
@@ -177,131 +188,33 @@
     </div>
     <div class="col-12">
         <div class="card shadow-sm border-0 p-4 rounded-4">
-            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Pression Vapeur Eau</h5>
-            <canvas id="pressChart" class="w-100" height="100"></canvas>
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Pluie</h5>
+            <canvas id="rainChart" class="w-100" height="100"></canvas>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card shadow-sm border-0 p-4 rounded-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Humidité du Sol</h5>
+            <canvas id="soilChart" class="w-100" height="100"></canvas>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card shadow-sm border-0 p-4 rounded-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Niveau de Lumière</h5>
+            <canvas id="lightChart" class="w-100" height="100"></canvas>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card shadow-sm border-0 p-4 rounded-4">
+            <h5 class="fw-bold text-primary mb-3"><i class="fa-solid fa-chart-line"></i> Qualité de l'Air</h5>
+            <canvas id="airChart" class="w-100" height="100"></canvas>
         </div>
     </div>
 </div>
-<!-- 🔮 Prévisions Météo (Next 24h) -->
-<section class="mt-5">
-    <h4 class="fw-bold mb-4 text-primary text-center">
-        <i class="fa-solid fa-cloud-sun-rain"></i> Prévisions Météo 24h
-    </h4>
-    <p class="text-center text-muted mb-4">Les prévisions sont générées par notre IA basée sur les tendances historiques</p>
-
-    <div class="row g-4 justify-content-center text-center">
-
-        <!-- Forecast Temperature -->
-        <div class="col-12 col-md-4 col-lg-3">
-            <div class="card shadow-lg border-0 rounded-4 p-4 hover-scale bg-gradient-to-br from-red-100 to-red-50">
-                <div class="d-flex flex-column align-items-center">
-                    <div class="badge rounded-pill bg-danger mb-3 px-3 py-2 fw-semibold">🌡️ Température</div>
-                    <p class="fs-3 fw-bold text-dark mb-1" id="temp-forecast-value">
-                        {{ forecast.temperature.0|floatformat:1 }} °C
-                    </p>
-                    <small class="text-muted">Prochaine heure</small>
-                    <div class="w-100 mt-3">
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ forecast.temperature.0|divisibleby:50 }}%;" aria-valuenow="{{ forecast.temperature.0 }}" aria-valuemin="0" aria-valuemax="50"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Forecast Rainfall -->
-        <div class="col-12 col-md-4 col-lg-3">
-            <div class="card shadow-lg border-0 rounded-4 p-4 hover-scale bg-gradient-to-br from-blue-100 to-blue-50">
-                <div class="d-flex flex-column align-items-center">
-                    <div class="badge rounded-pill bg-secondary mb-3 px-3 py-2 fw-semibold">🌧️ Pluie</div>
-                    <p class="fs-3 fw-bold text-dark mb-1" id="rain-forecast-value">
-                        {{ forecast.rainfall.0|floatformat:1 }} mm
-                    </p>
-                    <small class="text-muted">Prochaine heure</small>
-                    <div class="w-100 mt-3">
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-secondary" role="progressbar" style="width: {{ forecast.rainfall.0|divisibleby:20 }}%;" aria-valuenow="{{ forecast.rainfall.0 }}" aria-valuemin="0" aria-valuemax="20"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Forecast UV Index -->
-        <div class="col-12 col-md-4 col-lg-3">
-            <div class="card shadow-lg border-0 rounded-4 p-4 hover-scale bg-gradient-to-br from-yellow-100 to-yellow-50">
-                <div class="d-flex flex-column align-items-center">
-                    <div class="badge rounded-pill bg-warning mb-3 px-3 py-2 fw-semibold">Qualité de l'air</div>
-                    <p class="fs-3 fw-bold text-dark mb-1" id="uv-forecast-value">
-                        Moyenne
-                    </p>
-                    <small class="text-muted">Prochaine heure</small>
-                    <div class="w-100 mt-3">
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{ forecast.uv_index.0|divisibleby:11|floatformat:0 }}%;" aria-valuenow="{{ forecast.uv_index.0 }}" aria-valuemin="0" aria-valuemax="11"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</section>
 
 
 <!-- 🔮 Prévisions pour les 5 prochains jours -->
-<section class="mt-5">
-    <h4 class="fw-bold mb-4 text-primary text-center">
-        <i class="fa-solid fa-calendar-days"></i> Prévisions pour les 5 prochains jours
-    </h4>
-    <div class="row justify-content-center g-4">
-        <!-- Jour 1 -->
-        <div class="col-6 col-md-2">
-            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
-                <h6 class="fw-semibold">Lundi</h6>
-                <img src="{% static 'visualization/images/sunny.png' %}" alt="Soleil" width="50" class="mx-auto my-2">
-                <p class="mb-1 text-muted">Soleil</p>
-                <p class="fw-bold text-danger mb-0">26°C</p>
-            </div>
-        </div>
-        <!-- Jour 2 -->
-        <div class="col-6 col-md-2">
-            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
-                <h6 class="fw-semibold">Mardi</h6>
-                <img src="{% static 'visualization/images/cloudy.png' %}" alt="Nuageux" width="50" class="mx-auto my-2">
-                <p class="mb-1 text-muted">Nuageux</p>
-                <p class="fw-bold text-warning mb-0">22°C</p>
-            </div>
-        </div>
-        <!-- Jour 3 -->
-        <div class="col-6 col-md-2">
-            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
-                <h6 class="fw-semibold">Mercredi</h6>
-                <img src="{% static 'visualization/images/rain.png' %}" alt="Pluie" width="50" class="mx-auto my-2">
-                <p class="mb-1 text-muted">Pluie</p>
-                <p class="fw-bold text-primary mb-0">19°C</p>
-            </div>
-        </div>
-        <!-- Jour 4 -->
-        <div class="col-6 col-md-2">
-            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
-                <h6 class="fw-semibold">Jeudi</h6>
-                <img src="{% static 'visualization/images/storm.png' %}" alt="Orage" width="50" class="mx-auto my-2">
-                <p class="mb-1 text-muted">Orage</p>
-                <p class="fw-bold text-secondary mb-0">17°C</p>
-            </div>
-        </div>
-        <!-- Jour 5 -->
-        <div class="col-6 col-md-2">
-            <div class="card text-center border-0 shadow-sm p-3 hover-scale">
-                <h6 class="fw-semibold">Vendredi</h6>
-                <img src="{% static 'visualization/images/sunny.png' %}" alt="Soleil" width="50" class="mx-auto my-2">
-                <p class="mb-1 text-muted">Soleil</p>
-                <p class="fw-bold text-danger mb-0">25°C</p>
-            </div>
-        </div>
-    </div>
-</section>
+{# Section 'Prévisions pour les 5 prochains jours' supprimée sur demande #}
 
 {% endblock %}
 
@@ -337,7 +250,10 @@ function createChart(ctx, label, data, color) {
 
 const tempChart = createChart(document.getElementById('tempChart'), 'Température (°C)', {{ metrics.temperature|safe }}, 'rgba(239,68,68,1)');
 const humChart = createChart(document.getElementById('humChart'), 'Humidité (%)', {{ metrics.humidity|safe }}, 'rgba(59,130,246,1)');
-const pressChart = createChart(document.getElementById('pressChart'), 'Pression (hPa)', {{ metrics.pressure|safe }}, 'rgba(16,185,129,1)');
+const rainChart = createChart(document.getElementById('rainChart'), 'Pluie (mm)', {{ metrics.rain|safe }}, 'rgba(16,185,129,1)');
+const soilChart = createChart(document.getElementById('soilChart'), 'Humidité Sol (%)', {{ metrics.soil_moisture|safe }}, 'rgba(217,119,6,1)');
+const lightChart = createChart(document.getElementById('lightChart'), 'Lumière (lux)', {{ metrics.light_level|safe }}, 'rgba(99,102,241,1)');
+const airChart = createChart(document.getElementById('airChart'), 'Qualité Air (ppm)', {{ metrics.air_quality|safe }}, 'rgba(107,114,128,1)');
 
 function updateWeather() {
     fetch('/api/metrics/latest/')
@@ -345,24 +261,12 @@ function updateWeather() {
         .then(data => {
             document.getElementById('temp-value').textContent = data.temperature + " °C";
             document.getElementById('hum-value').textContent = data.humidity + " %";
-            document.getElementById('press-value').textContent = data.pressure + " hPa";
-            document.getElementById('wind-value').textContent = data.wind_speed + " m/s";
-            document.getElementById('wind-dir-value').textContent = data.wind_direction + "°";
-            document.getElementById('rain-value').textContent = data.rainfall + " mm";
-            document.getElementById('uv-value').textContent = data.uv_index;
-            document.getElementById('vis-value').textContent = data.visibility + " km";
-            document.getElementById('cloud-value').textContent = data.cloud_cover + " %";
-            document.getElementById('condition-text').textContent = data.condition;
+            document.getElementById('rain-value').textContent = data.rain + " mm";
+            document.getElementById('soil-value').textContent = data.soil_moisture || 0 + " %";
+            document.getElementById('light-value').textContent = data.light_level || 0 + " lux";
+            document.getElementById('air-value').textContent = data.air_quality || 0 + " ppm";
+            document.getElementById('condition-text').textContent = data.device_id || "Capteur";
             document.getElementById('current-time').textContent = "Dernière mise à jour : " + data.timestamp;
-
-            const icons = {
-                sunny: "{% static 'visualization/images/sunny.png' %}",
-                rain: "{% static 'visualization/images/rain.png' %}",
-                cloudy: "{% static 'visualization/images/cloudy.png' %}",
-                storm: "{% static 'visualization/images/storm.png' %}",
-                unknown: "{% static 'visualization/images/unknown.png' %}"
-            };
-            document.getElementById('weather-icon').src = icons[data.condition] || icons['unknown'];
         });
 }
 

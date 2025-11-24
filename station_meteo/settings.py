@@ -86,9 +86,9 @@ WSGI_APPLICATION = "station_meteo.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "votre_base_de_donnees",
-        "USER": "votre_utilisateur",
-        "PASSWORD": "votre_mot_de_passe",
+        "NAME": "meteo",
+        "USER": "postgres",
+        "PASSWORD": "amine@4321",
         "HOST": "localhost",
         "PORT": "5432",
     }

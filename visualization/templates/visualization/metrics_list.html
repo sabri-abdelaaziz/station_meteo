@@ -14,8 +14,8 @@
             <h5 class="fw-bold"><i class="fa-solid fa-cloud-sun"></i> Dernière Mesure</h5>
             <p>Température: {{ metrics.latest.temperature }} °C</p>
             <p>Humidité: {{ metrics.latest.humidity }} %</p>
-            <p>Pression: {{ metrics.latest.pressure }} hPa</p>
-            <p>Condition: {{ metrics.latest.condition }}</p>
+            <p>Pluie: {{ metrics.latest.rain }} mm</p>
+            <p>ID Capteur: {{ metrics.latest.device_id }}</p>
             <p>Timestamp: {{ metrics.latest.timestamp }}</p>
         </div>
     </div>
@@ -40,10 +40,8 @@
                 <th>Timestamp</th>
                 <th>Température (°C)</th>
                 <th>Humidité (%)</th>
-                <th>Pression Vapeur de l'eau</th>
-                
                 <th>Pluie (mm)</th>
-                <th>Condition</th>
+                <th>ID Capteur</th>
             </tr>
         </thead>
         <tbody class="text-center">
@@ -52,9 +50,8 @@
                 <td>{{ m.timestamp }}</td>
                 <td>{{ m.temperature }}</td>
                 <td>{{ m.humidity }}</td>
-                <td>{{ m.pressure }}</td>
-                <td>{{ m.rainfall }}</td>
-                 <td>{{ m.condition }}</td>
+                <td>{{ m.rain }}</td>
+                <td>{{ m.device_id }}</td>
             </tr>
             {% empty %}
             <tr>

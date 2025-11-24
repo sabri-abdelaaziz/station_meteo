@@ -1,13 +1,14 @@
 import pandas as pd
 from statsmodels.tsa.statespace.sarimax import SARIMAXResults
 from statsmodels.tsa.arima.model import ARIMA
-from .models import WeatherMetric
+from .models import SensorReading
 from datetime import timedelta, datetime
 import os
 import pickle
 import random
 import bz2
 from django.db import connection
+from .db_utils import ensure_tables, get_last_n
 
 # Essayer d'importer joblib (souvent utilisé pour sauvegarder des modèles)
 try:
@@ -21,7 +22,7 @@ except ImportError:
 # 🔹 1. ARIMA simple (forecast_api_arima)
 # -------------------------------------------------------------------
 def forecast_metric_arima(metric_name, steps=24):
-    data = WeatherMetric.objects.all().order_by('timestamp').values('timestamp', metric_name)
+    data = SensorReading.objects.all().order_by('timestamp').values('timestamp', metric_name)
     df = pd.DataFrame(data)
 
     if df.empty:
@@ -69,30 +70,30 @@ def forecast_metric(metric_values, steps=24):
 # -------------------------------------------------------------------
 # 🔹 3. CHARGEMENT DU MODELE SARIMAX
 # -------------------------------------------------------------------
-def load_sarima_model():
-    """
-    Charge le modèle SARIMA sauvegardé depuis un fichier compressé .bz2
+def load_sarima_model(filename: str = "sarima_temperature_prediction.pkl.bz2"):
+    """Charge le modèle SARIMA sauvegardé depuis un fichier compressé .bz2.
+
+    `filename` doit être le nom du fichier dans le dossier `forecast_model`.
+    Retourne l'objet modèle s'il contient `get_forecast`, sinon lève une erreur.
     """
     model_path = os.path.join(
         os.path.dirname(__file__),
         "forecast_model",
-        "sarima_temperature_prediction.pkl.bz2"   # Fichier compressé avec bz2
+        filename
     )
 
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Model file not found: {model_path}")
 
-    # Charger le modèle depuis le fichier compressé bz2
     try:
         with bz2.BZ2File(model_path, "r") as f:
             sarima_model_loaded = pickle.load(f)
-        
-        # Vérifier que c'est bien un modèle SARIMAX
+
         if hasattr(sarima_model_loaded, 'get_forecast'):
-            print(f"DEBUG: Modèle chargé avec bz2 + pickle. Type: {type(sarima_model_loaded)}")
+            print(f"DEBUG: Modèle chargé depuis {filename}. Type: {type(sarima_model_loaded)}")
             return sarima_model_loaded
         else:
-            raise ValueError(f"Le modèle chargé n'est pas un modèle SARIMAX valide. Type: {type(sarima_model_loaded)}, Attributs: {dir(sarima_model_loaded)[:10]}")
+            raise ValueError(f"Le modèle chargé n'est pas un modèle SARIMAX valide. Type: {type(sarima_model_loaded)}")
     except Exception as e:
         raise ValueError(f"Impossible de charger le modèle depuis {model_path}. Erreur: {e}")
 
@@ -120,43 +121,38 @@ def generate_forecast():
         print(f"DEBUG ERROR: {error_msg}")
         return {"error": error_msg}
 
-    # Récupérer les 10 dernières températures depuis PostgreSQL, table meteo
+    # S'assurer que les tables existent
     try:
-        with connection.cursor() as cursor:
-            # Requête SQL pour récupérer les 10 dernières températures
-            # Compatible PostgreSQL
-            query = """
-                SELECT temperature 
-                FROM meteo 
-                ORDER BY timestamp DESC 
-                LIMIT 10
-            """
-            cursor.execute(query)
-            results = cursor.fetchall()
-            
-            # Extraire les températures et les inverser pour avoir les plus anciennes en premier
-            # results est une liste de tuples, on extrait le premier élément de chaque tuple
-            temperature_list = [float(row[0]) for row in reversed(results)]
-            
-            # Si on n'a pas 10 valeurs, compléter avec la dernière valeur disponible
-            if len(temperature_list) < 10:
-                if len(temperature_list) > 0:
-                    last_temp = temperature_list[-1]
-                    temperature_list = [last_temp] * (10 - len(temperature_list)) + temperature_list
-                else:
-                    # Si aucune donnée, utiliser des valeurs par défaut
-                    temperature_list = [20.0] * 10
-                    print("DEBUG: Aucune donnée dans la table meteo, utilisation de valeurs par défaut")
-            
-            print(f"DEBUG: Températures récupérées depuis PostgreSQL: {temperature_list}")
-            print(f"DEBUG: Nombre de valeurs: {len(temperature_list)}")
-            print(f"DEBUG: Lag_1 (plus récent) = {temperature_list[-1]}, Lag_10 (plus ancien) = {temperature_list[0]}")
-            
+        ensure_tables()
     except Exception as e:
-        print(f"DEBUG ERROR: Erreur lors de la récupération depuis PostgreSQL: {e}")
-        # En cas d'erreur, utiliser des valeurs par défaut
+        print(f"DEBUG ERROR: Impossible de créer/valider les tables: {e}")
+
+    # Essayer de récupérer les 10 dernières températures depuis la table `meteo_hourly`
+    try:
+        temperature_list = get_last_n('meteo_hourly', 10, 'temp_c')
+
+        # Si pas assez de valeurs, tenter la table `meteo_10sec`
+        if len(temperature_list) < 10:
+            extra = get_last_n('meteo_10sec', 10 - len(temperature_list), 'temp_c')
+            temperature_list = (extra + temperature_list)[-10:]
+
+        # Si toujours insuffisant, fallback sur le modèle Django `SensorReading`
+        if len(temperature_list) < 10:
+            data = SensorReading.objects.all().order_by('-timestamp').values_list('temperature', flat=True)[:10]
+            temperature_list = list(reversed([float(x) for x in data]))
+
+        # Remplir si encore insuffisant
+        if len(temperature_list) < 10:
+            if temperature_list:
+                last_temp = temperature_list[-1]
+                temperature_list = [last_temp] * (10 - len(temperature_list)) + temperature_list
+            else:
+                temperature_list = [20.0] * 10
+
+        print(f"DEBUG: Températures récupérées: {temperature_list}")
+    except Exception as e:
+        print(f"DEBUG ERROR: Erreur lors de la récupération des températures: {e}")
         temperature_list = [20.0] * 10
-        print(f"DEBUG: Utilisation de valeurs par défaut: {temperature_list}")
     
     # Calculer l'heure de base (maintenant)
     base_time = datetime.now()
@@ -223,6 +219,80 @@ def generate_forecast():
         result[f'hour_{i}'] = forecast_results[i-1]
     
     return result
+
+
+def generate_forecast_days(steps=5):
+    """Génère une prévision pour les `steps` prochains jours en utilisant la table `meteo_daily`.
+
+    Retourne une liste de dicts: [{'date': 'YYYY-MM-DD', 'temp': x}, ...]
+    """
+    try:
+        ensure_tables()
+    except Exception as e:
+        print(f"DEBUG ERROR: ensure_tables failed: {e}")
+
+    # Récupérer les 10 dernières moyennes journalières
+    try:
+        daily = get_last_n('meteo_daily', 10, 'temp_mean')
+    except Exception:
+        daily = []
+
+    # Si pas de données journalières, construire à partir de SensorReading
+    if not daily:
+        try:
+            qs = SensorReading.objects.all()
+            if qs.exists():
+                # Agréger par date
+                df = pd.DataFrame(list(qs.values('timestamp', 'temperature')))
+                df['date'] = pd.to_datetime(df['timestamp']).dt.date
+                daily_df = df.groupby('date')['temperature'].mean().reset_index()
+                daily = daily_df['temperature'].astype(float).tolist()[-10:]
+        except Exception as e:
+            print(f"DEBUG ERROR building daily from SensorReading: {e}")
+
+    if not daily:
+        daily = [20.0] * 10
+
+    # Première tentative : utiliser un modèle SARIMA daily s'il existe
+    try:
+        daily_model = load_sarima_model("sarima_temperature_daily_prediction.pkl.bz2")
+        # Certains modèles retournent un objet avec get_forecast
+        try:
+            forecast = daily_model.get_forecast(steps=steps)
+            preds = [float(x) for x in forecast.predicted_mean]
+            base_date = datetime.now().date()
+            results = []
+            for i, p in enumerate(preds, start=1):
+                d = base_date + timedelta(days=i)
+                results.append({'date': d.strftime("%Y-%m-%d"), 'temp': round(float(p), 2)})
+            return results
+        except Exception as e:
+            print(f"DEBUG ERROR using daily SARIMA model: {e}")
+            # si le chargement a réussi mais la prédiction a échoué, tomber sur le fallback
+    except FileNotFoundError:
+        # Pas de modèle daily trouvé — on utilisera le fallback ci-dessous
+        pass
+    except Exception as e:
+        print(f"DEBUG ERROR loading daily model: {e}")
+
+    # Fallback : ajuster un ARIMA simple sur la série quotidienne construite
+    series = pd.Series(daily)
+    try:
+        model = ARIMA(series, order=(2, 1, 0))
+        model_fit = model.fit()
+        preds = model_fit.forecast(steps=steps)
+        base_date = datetime.now().date()
+        results = []
+        for i, p in enumerate(preds, start=1):
+            d = base_date + timedelta(days=i)
+            results.append({'date': d.strftime("%Y-%m-%d"), 'temp': round(float(p), 2)})
+        return results
+    except Exception as e:
+        print(f"DEBUG ERROR in generate_forecast_days: {e}")
+        # Fallback simple: repeat last value
+        last = daily[-1]
+        base_date = datetime.now().date()
+        return [{'date': (base_date + timedelta(days=i)).strftime("%Y-%m-%d"), 'temp': round(float(last), 2)} for i in range(1, steps+1)]
 
 
 def get_temperature_alert(temp):

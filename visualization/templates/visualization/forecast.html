@@ -3,88 +3,97 @@
 
 {% block extra_head %}
 <style>
-/* 🌟 Enhanced Forecast Cards */
-.forecast-card {
-    border: none;
-    border-radius: 16px;
-    padding: 2.5rem;
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-    background: linear-gradient(145deg, #ffffff, #f1f3f6);
-    box-shadow: 6px 6px 15px #d1d9e6, -6px -6px 15px #ffffff;
-    min-height: 220px;
-    width: 100%;
-}
-.forecast-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 10px 10px 20px #c8d1e0, -10px -10px 20px #ffffff;
-}
-.forecast-title {
-    font-weight: 600;
-    font-size: 1.1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-}
-.forecast-value {
-    font-size: 2.2rem;
-    font-weight: 700;
-    margin-top: 1rem;
-    margin-bottom: 0.5rem;
-}
-.forecast-trend {
-    font-size: 0.85rem;
-    color: #6c757d;
-    margin-top: 0.3rem;
-}
-.badge-alert {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 0.35em 0.6em;
-    border-radius: 10px;
-    color: #fff;
-}
-.badge-safe { background-color: #4ade80; }
-.badge-warning { background-color: #facc15; }
-.badge-danger { background-color: #f87171; }
-
-/* Section header style */
-.forecast-header {
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    margin-bottom: 1.5rem;
-}
+/* Simple styles */
+.forecast-card { border: none; border-radius: 12px; padding: 1.25rem; min-height: 160px; }
+.forecast-title { font-weight:600; }
+.forecast-value { font-size:1.6rem; font-weight:700; margin-top:0.5rem }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="forecast-header text-center">
-    <h2 class="fw-bold mb-1">🤖 Prévisions Météo - IA</h2>
-    <p class="mb-0">Prochaine heure / tendances des paramètres clés</p>
+	<h2 class="fw-bold mb-1">🤖 Prévisions Météo - IA</h2>
+	<p class="mb-0">Affiche les 5 prochaines heures et les 5 prochains jours</p>
+	</div>
+
+{% if last_10 %}
+<div class="mb-3 text-center">
+	<div class="d-flex justify-content-center gap-2 mt-2">
+		{% for v in last_10 %}
+			<span class="badge bg-light border">{{ v|floatformat:1 }}°C</span>
+		{% endfor %}
+	</div>
+</div>
+{% endif %}
+
+<!-- 5 prochaines heures -->
+<h4 class="mt-4 mb-3 text-center">Prochaines heures</h4>
+<div class="row g-4 justify-content-center text-center">
+	{% if forecast_hours.hour_1 %}
+	<div class="col-6 col-md-2">
+		<div class="forecast-card card shadow-sm">
+			<div class="forecast-title">Heure +1 — {{ forecast_hours.hour_1.time|default:forecast_hours.hour_1.datetime|default:'+1h' }}</div>
+			<div class="forecast-value">{{ forecast_hours.hour_1.temperature|floatformat:1 }} °C</div>
+		</div>
+	</div>
+	{% endif %}
+
+	{% if forecast_hours.hour_2 %}
+	<div class="col-6 col-md-2">
+		<div class="forecast-card card shadow-sm">
+			<div class="forecast-title">Heure +2 — {{ forecast_hours.hour_2.time|default:forecast_hours.hour_2.datetime|default:'+2h' }}</div>
+			<div class="forecast-value">{{ forecast_hours.hour_2.temperature|floatformat:1 }} °C</div>
+		</div>
+	</div>
+	{% endif %}
+
+	{% if forecast_hours.hour_3 %}
+	<div class="col-6 col-md-2">
+		<div class="forecast-card card shadow-sm">
+			<div class="forecast-title">Heure +3 — {{ forecast_hours.hour_3.time|default:forecast_hours.hour_3.datetime|default:'+3h' }}</div>
+			<div class="forecast-value">{{ forecast_hours.hour_3.temperature|floatformat:1 }} °C</div>
+		</div>
+	</div>
+	{% endif %}
+
+	{% if forecast_hours.hour_4 %}
+	<div class="col-6 col-md-2">
+		<div class="forecast-card card shadow-sm">
+			<div class="forecast-title">Heure +4 — {{ forecast_hours.hour_4.time|default:forecast_hours.hour_4.datetime|default:'+4h' }}</div>
+			<div class="forecast-value">{{ forecast_hours.hour_4.temperature|floatformat:1 }} °C</div>
+		</div>
+	</div>
+	{% endif %}
+
+	{% if forecast_hours.hour_5 %}
+	<div class="col-6 col-md-2">
+		<div class="forecast-card card shadow-sm">
+			<div class="forecast-title">Heure +5 — {{ forecast_hours.hour_5.time|default:forecast_hours.hour_5.datetime|default:'+5h' }}</div>
+			<div class="forecast-value">{{ forecast_hours.hour_5.temperature|floatformat:1 }} °C</div>
+		</div>
+	</div>
+	{% endif %}
 </div>
 
-<div class="row g-4 justify-content-center text-center" style="display: flex; flex-wrap: wrap;">
+<!-- 5 prochains jours -->
+<section class="mt-4">
+	<h4 class="fw-bold mb-3 text-primary text-center">Prévisions — 5 prochains jours</h4>
+	{% if forecast_days %}
+	<div class="row g-4 justify-content-center text-center">
+		{% for day in forecast_days %}
+			<div class="col-6 col-md-2">
+				<div class="forecast-card card shadow-sm">
+					<div class="forecast-title">{{ day.date }}</div>
+					<div class="forecast-value">{{ day.temp|floatformat:1 }} °C</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	{% else %}
+		<p class="text-center text-muted">Aucune prévision disponible pour le moment.</p>
+	{% endif %}
+</section>
 
-    <!-- Heure 1 -->
-    <div class="col-12 col-md-6 col-lg-2" style="flex: 0 0 20%; max-width: 40%;">
-        <div class="forecast-card">
-            <div class="forecast-title text-danger">🌡️ Heure +1</div>
-            <span class="badge-alert badge-danger">
-                {{ forecast.hour_1.alert|default:"⚠️" }}
-            </span>
-            <div class="forecast-value">{{ forecast.hour_1.temperature|floatformat:1 }} °C</div>
-            <div class="forecast-trend">
-                {{ forecast.hour_1.time|default:"--:--" }}
-            </div>
-        </div>
-    </div>
-
-</div>
 {% endblock %}
 
-{% block extra_js %}
-{% endblock %}
+{% block extra_js %}{% endblock %}
